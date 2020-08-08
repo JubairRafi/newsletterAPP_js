@@ -23,33 +23,46 @@ app.post("/",(req,res)=>{
   console.log(firstName, lastName, email);
 
 
-  const data ={  // data for the mailchimps
-    members:[
-      {
-        email_address:email,
-        status:"subscribed",
-        merge_fields:{
-          FNAME:firstName,
-          LNAME:lastName
-        }
-      }
-    ]
-  };
-   const jsonData = JSON.stringify(data); //converting hex to string
+                const data ={  // data for the mailchimps
+                  members:[
+                    {
+                      email_address:email,
+                      status:"subscribed",
+                      merge_fields:{
+                        FNAME:firstName,
+                        LNAME:lastName
+                      }
+                    }
+                  ]
+                };
+               const jsonData = JSON.stringify(data); //converting hex to string
 
-   const url = "https://us17.api.mailchimp.com/3.0/lists/aec296a172";
-   const option ={
-     method:"POST",
-     auth:"jubair:0185e728b588a70c03470619a1bb4b3a-us17"
-   };
-  const request = https.request(url,option,(response)=>{ //post the data to the mailchimp server/externals
-     response.on("data",(data)=>{
-       console.log(JSON.parse(data));
-     });
-   });
+               const url = "https://us17.api.mailchimp.com/3.0/lists/aec296a172";
+               const option ={
+                 method:"POST",
+                 auth:"jubair:0185e728b588a70c03470619a1bb4b3a1-us17"
+               };
+              const request = https.request(url,option,(response)=>{ //post the data to the mailchimp server/externals
+
+                if(response.statusCode === 200){
+                    res.sendFile(__dirname+"/success.html");
+                }else{
+                    res.sendFile(__dirname+"/failure.html");
+                }
+
+                 response.on("data",(data)=>{
+                   console.log(JSON.parse(data));
+                 });
+              });
 
    request.write(jsonData);
    request.end();
+});
+
+//for failure post
+
+app.post("/failure",(req,res)=>{
+  res.redirect("/");
 });
 
 app.listen(3000,()=>{  //our app will listen to port 3000
