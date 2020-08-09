@@ -40,7 +40,7 @@ app.post("/",(req,res)=>{
                const url = "https://us17.api.mailchimp.com/3.0/lists/aec296a172";
                const option ={
                  method:"POST",
-                 auth:"jubair:0185e728b588a70c03470619a1bb4b3a1-us17"
+                 auth:"jubair:0185e728b588a70c03470619a1bb4b3a-us17"
                };
               const request = https.request(url,option,(response)=>{ //post the data to the mailchimp server/externals
 
